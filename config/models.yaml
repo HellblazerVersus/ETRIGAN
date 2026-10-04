@@ -1,0 +1,26 @@
+# ETRIGAN Model Configuration
+# Switch 'mode' between 'api' (fast dev with cloud APIs) and 'local' (offline demo with Ollama)
+
+mode: "local"  # Active: 100% offline local inference on laptop
+
+providers:
+  api:
+    # Works with Groq, OpenAI, or any OpenAI-compatible provider
+    base_url: "https://api.groq.com/openai/v1"
+    api_key_env: "LLM_API_KEY"
+    models:
+      classifier: "llama-3.1-8b-instant"
+      general: "llama-3.3-70b-versatile"
+      code: "qwen-2.5-coder-32b"
+      vision: "llama-3.2-11b-vision-preview"
+
+  local:
+    # 100% offline localhost Ollama endpoint for venue laptop
+    base_url: "http://localhost:11434/v1"
+    api_key_env: ""
+    models:
+      classifier: "llama3.2:1b"
+      general: "llama3.2:1b"
+      code: "qwen2.5:1.5b"
+      vision: "llama3.2:1b"
+      embed: "nomic-embed-text"

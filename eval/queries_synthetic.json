@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "description": "Synthetic evaluation dataset for hybrid retrieval.",
+    "warning": "These queries and relevance labels are SYNTHETIC and hand-authored, not model generated. Check labels here before trusting MRR."
+  },
+  "queries": [
+    {
+      "id": "q1",
+      "text_en": "What is the operating pressure of the CDU?",
+      "text_hi": "CDU का ऑपरेटिंग दबाव क्या है?",
+      "expected_docs": ["ACME_SOP_CDU_042_Crude_Overhead_Piping.pdf"]
+    },
+    {
+      "id": "q2",
+      "text_en": "Hot work permit requirements",
+      "text_hi": "हॉट वर्क परमिट की आवश्यकताएं",
+      "expected_docs": ["ACME_FSM_202_Hot_Work_Permits.pdf"]
+    },
+    {
+      "id": "q3",
+      "text_en": "Valve replacement schedule",
+      "text_hi": "वाल्व बदलने का कार्यक्रम",
+      "expected_docs": ["ACME_SOP_CDU_042_Crude_Overhead_Piping.pdf"]
+    }
+  ]
+}

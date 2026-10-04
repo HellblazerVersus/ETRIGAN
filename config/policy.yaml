@@ -1,0 +1,47 @@
+# ETRIGAN Industrial Role-Based Access Control (RBAC) & Clearance Policy
+# Enforces refinery data confidentiality and credentialed action governance on-premise
+
+version: "2.4"
+organization: "Mangalore Refinery and Petrochemicals Limited (ACME)"
+
+auth_mode: "air_gapped_mtls_kerberos"  # Local plant LDAP/Kerberos token validation
+
+roles:
+  level_1_field_operator:
+    title: "Field Operator"
+    clearance: "LEVEL 1 (OPERATIONAL)"
+    permissions:
+      - "view_live_telemetry"
+      - "read_public_sops"
+    denied:
+      - "run_sandboxed_math"
+      - "generate_approval_notes"
+      - "modify_safety_thresholds"
+
+  level_2_inspection_engineer:
+    title: "Plant Reliability & Inspection Engineer"
+    clearance: "LEVEL 2 (RESTRICTED - TECHNICAL)"
+    permissions:
+      - "view_live_telemetry"
+      - "read_confidential_drawings"
+      - "run_sandboxed_math"
+      - "draft_turnaround_notes"
+      - "query_grounded_rag"
+    denied:
+      - "execute_commercial_tenders"
+      - "final_cgm_signoff"
+
+  level_3_chief_general_manager:
+    title: "Chief General Manager (Inspection & Plant Safety)"
+    clearance: "LEVEL 3 (EXECUTIVE SIGN-OFF)"
+    permissions:
+      - "*"
+    cryptographic_signing:
+      required: true
+      key_type: "ED25519_HARDWARE_HSM"
+
+data_governance:
+  zero_cloud_leak: true
+  retention_policy: "local_sqlite_wal"
+  audit_chain: "sha256_hash_chained"
+  allow_external_egress: false

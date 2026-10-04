@@ -1,0 +1,37 @@
+# Soup Fine-Tuning Recipe for ETRIGAN
+# 
+# Hardware Target: Intel CPU / NVIDIA RTX 2050 (4GB VRAM), 7.8GB RAM total.
+# Technique: Layer Streaming (allows training an 8B model on a 4GB GPU by streaming layers in and out of VRAM).
+# However, given tight system RAM (3.8GB in WSL), we start with a 1B/3B model to avoid swapping to disk.
+
+project:
+  name: "etrigan-domain-adapter"
+  description: "Fine-tune local base models on domain-specific SOPs and inspection logs."
+
+model:
+  base: "llama3.2:1b"       # Starting small to fit within 3.8GB WSL RAM footprint
+  adapter: "lora"
+  lora_r: 8
+  lora_alpha: 16
+  target_modules: ["q_proj", "v_proj"]
+
+hardware:
+  # Enable layer streaming to prevent OOM on 4GB VRAM
+  layer_streaming: true
+  offload_optimizer: true
+  device: "cuda"            # RTX 2050
+  mixed_precision: "fp16"
+
+data:
+  train_path: "seed/domain_instruct.jsonl"
+  format: "instruction"
+  max_seq_length: 1024
+
+training:
+  batch_size: 1
+  gradient_accumulation_steps: 4
+  learning_rate: 2e-5
+  epochs: 3
+  save_steps: 50
+
+# NOTE: Training execution is PLANNED. This config is currently in validation phase.
